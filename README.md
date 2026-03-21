@@ -40,6 +40,12 @@ The built app is created at:
 build/DerivedData/Build/Products/Release/PodWatch.app
 ```
 
+The build script also creates a distributable DMG at:
+
+```text
+build/Artifacts/PodWatch.dmg
+```
+
 ## Privacy
 
 PodWatch works entirely on-device.
