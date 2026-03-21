@@ -1,0 +1,12 @@
+.DS_Store
+.env
+.build/
+build/
+DerivedData/
+dist/
+output/
+AppIcon.iconset/
+
+*.xcuserstate
+PodWatch.xcodeproj/xcuserdata/
+PodWatch.xcodeproj/project.xcworkspace/xcuserdata/
