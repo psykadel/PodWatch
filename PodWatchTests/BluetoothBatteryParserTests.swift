@@ -51,9 +51,9 @@ final class BluetoothBatteryParserTests: XCTestCase {
 
     func testParsesDynamicDeviceKeyAsFriendlyName() throws {
         let snapshots = try parser.parse(data: dynamicKeyJSON.data(using: .utf8)!)
-        let device = try XCTUnwrap(snapshots.first { $0.address == "08:5D:53:AE:8E:6B" })
+        let device = try XCTUnwrap(snapshots.first { $0.address == "00:11:22:33:44:55" })
 
-        XCTAssertEqual(device.name, "Kristjan’s AirPods")
+        XCTAssertEqual(device.name, "Example AirPods")
         XCTAssertTrue(device.isConnected)
         XCTAssertEqual(device.leftBattery, 5)
         XCTAssertEqual(device.rightBattery, 15)
@@ -100,8 +100,8 @@ private let dynamicKeyJSON = """
     {
       "device_connected": [
         {
-          "Kristjan’s AirPods": {
-            "device_address": "08:5D:53:AE:8E:6B",
+          "Example AirPods": {
+            "device_address": "00:11:22:33:44:55",
             "device_batteryLevelCase": "66%",
             "device_batteryLevelLeft": "5%",
             "device_batteryLevelRight": "15%",
