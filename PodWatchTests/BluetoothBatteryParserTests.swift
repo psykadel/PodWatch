@@ -42,6 +42,15 @@ final class BluetoothBatteryParserTests: XCTestCase {
         XCTAssertEqual(device.rightBattery, 66)
     }
 
+    func testTreatsIntegerOneAsOnePercentNotFullCharge() throws {
+        let snapshots = try parser.parse(data: integerBatteryJSON.data(using: .utf8)!)
+        let device = try XCTUnwrap(snapshots.first { $0.address == "12-34-56-78-90-AB" })
+
+        XCTAssertEqual(device.leftBattery, 1)
+        XCTAssertEqual(device.rightBattery, 1)
+        XCTAssertEqual(device.caseBattery, 100)
+    }
+
     func testPreservesDisconnectedDeviceSnapshots() throws {
         let snapshots = try parser.parse(data: sampleJSON.data(using: .utf8)!)
         let device = try XCTUnwrap(snapshots.first { $0.address == "AA-BB-CC-DD-EE-FF" })
@@ -107,6 +116,25 @@ private let dynamicKeyJSON = """
             "device_batteryLevelRight": "15%",
             "device_minorType": "Headphones"
           }
+        }
+      ]
+    }
+  ]
+}
+"""
+
+private let integerBatteryJSON = """
+{
+  "SPBluetoothDataType": [
+    {
+      "_items": [
+        {
+          "device_defaultName": "Low Battery AirPods",
+          "device_address": "12-34-56-78-90-AB",
+          "device_connected": true,
+          "device_batteryLevelLeft": 1,
+          "device_batteryLevelRight": "1",
+          "device_batteryLevelCase": 1.0
         }
       ]
     }

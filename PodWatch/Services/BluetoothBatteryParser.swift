@@ -170,7 +170,10 @@ struct BluetoothBatteryParser {
 
     private func percentageValue(from value: Any) -> Int? {
         if let number = value as? NSNumber {
-            return normalizePercentage(number.doubleValue)
+            return normalizePercentage(
+                number.doubleValue,
+                shouldInterpretUnitIntervalAsFraction: CFNumberIsFloatType(number)
+            )
         }
 
         guard let string = value as? String else {
@@ -184,16 +187,19 @@ struct BluetoothBatteryParser {
             return nil
         }
 
-        return normalizePercentage(number)
+        return normalizePercentage(
+            number,
+            shouldInterpretUnitIntervalAsFraction: !normalized.contains("%") && extracted.contains(".")
+        )
     }
 
-    private func normalizePercentage(_ rawValue: Double) -> Int? {
+    private func normalizePercentage(_ rawValue: Double, shouldInterpretUnitIntervalAsFraction: Bool) -> Int? {
         guard rawValue.isFinite, rawValue >= 0 else {
             return nil
         }
 
         let percentage: Double
-        if rawValue > 0, rawValue <= 1 {
+        if shouldInterpretUnitIntervalAsFraction, rawValue > 0, rawValue <= 1 {
             percentage = rawValue * 100
         } else {
             percentage = rawValue
